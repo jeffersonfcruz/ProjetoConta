@@ -2,7 +2,7 @@ const jwt = require ("jsonwebtoken");
 const cfg = require ("../config/cfg")
 
 const create_token = (id,user,email)=>{
-    jwt.sign({
+     return jwt.sign({
         id:id,
         user:user,
         email:email
