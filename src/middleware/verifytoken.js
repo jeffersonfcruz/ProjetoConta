@@ -7,8 +7,8 @@ const verify_token = (req, res, next) =>{
     
         if(!token)return res.status(401).send({output: `Access Denied`});
         jwt.verify(token, cfg.jwt_secret, (error, same) =>{
-            if(error)return res.status(401).send({output:`Erro ao verificar token -> ${error}`});
-            if(!same)return res.status(401).send({output: `Erro de autenticação`});
+            if(error)return res.status(401).send({output:`token failed -> ${error}`});
+            if(!same)return res.status(401).send({output: `authentication error`});
             next()
         })
     }
