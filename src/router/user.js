@@ -42,4 +42,29 @@ router.get("/dados",verify_token,(req,res)=>{
     res.send("Eu estou bem")
 })
 
+router.put("/update/email/:id",(req,res)=>{
+    users.findByIdAndUpdate(
+        req.params.id,
+        {email:req.body.email},
+        {new:true},
+        (error,result)=>{
+            if(error) return res.status(500).send({output: `internal error -> ${error}`})
+            if (!result) return res.status(404).send({output: `user not found` })
+            res.status(202).send({output: `user email updated`})    
+        }
+    )
+})
+router.put("/update/password/:id",(req,res)=>{
+    users.findByIdAndUpdate(
+        req.params.id,
+        {password:req.body.password},
+        {new:true},
+        (error,result)=>{
+            if(error) return res.status(500).send({output: `internal error -> ${error}`})
+            if (!result) return res.status(404).send({output: `user not found` })
+            res.status(202).send({output: `user password updated`})    
+        }
+    )
+})
+
 module.exports = router;
