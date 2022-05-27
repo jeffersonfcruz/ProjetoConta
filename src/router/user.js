@@ -55,7 +55,8 @@ router.put("/update/email/:id",verify_token, (req,res)=>{
     )
 })
 router.put ("/update/password/:id",verify_token,(req,res)=> {
-    bcrypt.hash(req.body.password,cfg.salt_bc,(error, hash) => {
+    
+    bcrypt.hash (req.body.password,cfg.salt_bc,(error, hash) => {
         if (error)return res.status(500).send({output: `Internal error at generator password -> ${error}`})
         // insert hash password at body password request
         req.body.password = hash;
