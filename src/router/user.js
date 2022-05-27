@@ -42,7 +42,7 @@ router.get("/dados",verify_token,(req,res)=>{
     res.send("Eu estou bem")
 })
 
-router.put("/update/email/:id",(req,res)=>{
+router.put("/update/email/:id",verify_token, (req,res)=>{
     users.findByIdAndUpdate(
         req.params.id,
         {email:req.body.email},
@@ -54,7 +54,12 @@ router.put("/update/email/:id",(req,res)=>{
         }
     )
 })
-router.put("/update/password/:id",(req,res)=>{
+router.put ("/update/password/:id",verify_token,(req,res)=> {
+    bcrypt.hash(req.body.password,cfg.salt_bc,(error, hash) => {
+        if (error)return res.status(500).send({output: `Internal error at generator password -> ${error}`})
+        // insert hash password at body password request
+        req.body.password = hash;
+
     users.findByIdAndUpdate(
         req.params.id,
         {password:req.body.password},
@@ -63,8 +68,15 @@ router.put("/update/password/:id",(req,res)=>{
             if(error) return res.status(500).send({output: `internal error -> ${error}`})
             if (!result) return res.status(404).send({output: `user not found` })
             res.status(202).send({output: `user password updated`})    
-        }
-    )
+        })
+    })
+})
+
+router.get("/list",(req,res)=>{
+    users.find((error,result)=>{
+        if (error) return res.status(500).send({output: `internal error -> ${error}`})
+        res.status(200).send({output: `OK`, payload:result})
+    }).select("-password")
 })
 
 module.exports = router;
