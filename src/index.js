@@ -11,6 +11,7 @@ const verify_token = require ("./middleware/verifytoken");
 const user = require ("./model/users");
 const wallet = require ("./model/wallet");
 
+const router_wallet = require ("./router/wallet")
 const router_user = require("./router/user");
 
 const app =  express();
@@ -20,5 +21,6 @@ app.use(helmet());
 app.use(morgan("combined"));
 
 app.use("/api/users", router_user);
+app.use("/api/wallet", router_wallet);
 
 app.listen(5001,()=>console.log(`Server on-line`));
